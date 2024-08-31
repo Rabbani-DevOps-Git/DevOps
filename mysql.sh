@@ -1,12 +1,13 @@
 userid=$(id -u)
-
+R="\e[31m"
+W="\e[0m"
 
 validate(){
 	if [ $1 -ne 0 ]
 	then
-		echo "Package is not installed"
+		echo "Package $2 is not installed"
 	else
-		echo "package already installed"
+		echo -e "package $R $2 $W already $R installed "
 		exit 1
 	fi
 }
@@ -16,12 +17,12 @@ then
 	echo "user id is $userid"
 	echo "package validation initiated"
 	dnf list installed mysql &>> /dev/null
-	validate $?
+	validate $? mysql
 	if [ $? -eq 0 ]
 	then
 		dnf install mysql -y
 	else
-		validate $?
+		validate $? mysql
 	fi
 
 else
